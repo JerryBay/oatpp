@@ -26,7 +26,7 @@
 
 namespace oatpp { namespace network { namespace virtual_ {
 
-data::stream::DefaultInitializedContext Pipe::Reader::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
+data::stream::DefaultInitializedStreamContext Pipe::Reader::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
 
 void Pipe::Reader::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
   m_ioMode = ioMode;
@@ -83,7 +83,7 @@ v_io_size Pipe::Reader::read(void *data, v_buff_size count, async::Action& actio
   
 }
 
-oatpp::data::stream::Context& Pipe::Reader::getInputStreamContext() {
+oatpp::data::share::Context& Pipe::Reader::getInputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 
@@ -93,7 +93,7 @@ void Pipe::Reader::notifyWaitList() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-data::stream::DefaultInitializedContext Pipe::Writer::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
+data::stream::DefaultInitializedStreamContext Pipe::Writer::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
 
 void Pipe::Writer::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
   m_ioMode = ioMode;
@@ -103,7 +103,7 @@ oatpp::data::stream::IOMode Pipe::Writer::getOutputStreamIOMode() {
   return m_ioMode;
 }
 
-oatpp::data::stream::Context& Pipe::Writer::getOutputStreamContext() {
+oatpp::data::share::Context& Pipe::Writer::getOutputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 

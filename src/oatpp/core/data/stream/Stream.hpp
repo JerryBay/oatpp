@@ -25,6 +25,7 @@
 #ifndef oatpp_data_Stream
 #define oatpp_data_Stream
 
+#include <oatpp/core/data/share/Context.hpp>
 #include "oatpp/core/data/share/LazyStringMap.hpp"
 #include "oatpp/core/async/Coroutine.hpp"
 #include "oatpp/core/data/buffer/IOBuffer.hpp"
@@ -51,101 +52,42 @@ enum StreamType : v_int32 {
 
 };
 
-
 /**
- * Stream Context.
+ * Stream I/O mode.
  */
-class Context {
-public:
-  /**
-   * Convenience typedef for &id:oatpp::data::share::LazyStringMap;.
-   */
-  typedef oatpp::data::share::LazyStringMap<oatpp::data::share::StringKeyLabel> Properties;
-private:
-  Properties m_properties;
-protected:
-  /**
-   * `protected`. Get mutable additional optional context specific properties.
-   * @return - &l:Context::Properties;.
-   */
-  Properties& getMutableProperties();
-public:
+enum IOMode : v_int32 {
 
   /**
-   * Default constructor.
+   * Blocking stream I/O mode.
    */
-  Context() = default;
+  BLOCKING = 0,
 
   /**
-   * Constructor.
-   * @param properties - &l:Context::Properties;.
+   * Non-blocking stream I/O mode.
    */
-  Context(Properties&& properties);
-
-  /**
-   * Virtual destructor.
-   */
-  virtual ~Context() = default;
-
-  /**
-   * Initialize stream context.
-   */
-  virtual void init() = 0;
-
-  /**
-   * Initialize stream context in an async manner.
-   * @return - &id:oatpp::async::CoroutineStarter;.
-   */
-  virtual async::CoroutineStarter initAsync() = 0;
-
-  /**
-   * Check if the stream context is initialized.
-   * @return - `bool`.
-   */
-  virtual bool isInitialized() const = 0;
-
-  /**
-   * Get stream type.
-   * @return - &l:StreamType;.
-   */
-  virtual StreamType getStreamType() const = 0;
-
-  /**
-   * Additional optional context specific properties.
-   * @return - &l:Context::Properties;.
-   */
-  const Properties& getProperties() const;
-
-  inline bool operator == (const Context& other){
-    return this == &other;
-  }
-
-  inline bool operator != (const Context& other){
-    return this != &other;
-  }
-
+  ASYNCHRONOUS = 1
 };
 
 /**
  * The default implementation for context with no initialization.
  */
-class DefaultInitializedContext : public oatpp::data::stream::Context {
-private:
+class DefaultInitializedStreamContext : public oatpp::data::share::DefaultInitializedContext {
+ private:
   StreamType m_streamType;
-public:
+ public:
 
   /**
    * Constructor.
    * @param streamType - &l:StreamType;.
    */
-  DefaultInitializedContext(StreamType streamType);
+  DefaultInitializedStreamContext(StreamType streamType);
 
   /**
    * Constructor.
    * @param streamType - &l:StreamType;.
    * @param properties - &l:Context::Properties;.
    */
-  DefaultInitializedContext(StreamType streamType, Properties&& properties);
+  DefaultInitializedStreamContext(StreamType streamType, Properties&& properties);
 
   /**
    * Initialize stream context. <br>
@@ -171,24 +113,8 @@ public:
    * Get stream type.
    * @return - &l:StreamType;.
    */
-  StreamType getStreamType() const override;
+  StreamType getStreamType() const;
 
-};
-
-/**
- * Stream I/O mode.
- */
-enum IOMode : v_int32 {
-
-  /**
-   * Blocking stream I/O mode.
-   */
-  BLOCKING = 0,
-
-  /**
-   * Non-blocking stream I/O mode.
-   */
-  ASYNCHRONOUS = 1
 };
 
 /**
@@ -280,7 +206,7 @@ public:
    * Get stream context.
    * @return - &l:Context;.
    */
-  virtual Context& getOutputStreamContext() = 0;
+  virtual share::Context& getOutputStreamContext() = 0;
 
 };
 
@@ -344,9 +270,9 @@ public:
 
   /**
    * Get stream context.
-   * @return - &l:Context;.
+   * @return - &l:share::Context;.
    */
-  virtual Context& getInputStreamContext() = 0;
+  virtual share::Context& getInputStreamContext() = 0;
 
 };
 

@@ -36,7 +36,7 @@ namespace oatpp { namespace data{ namespace stream {
  */
 class FileInputStream : public InputStream {
 public:
-  static oatpp::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static oatpp::data::stream::DefaultInitializedStreamContext DEFAULT_CONTEXT;
 private:
   std::FILE* m_file;
   bool m_ownsFile;
@@ -94,7 +94,7 @@ public:
    * Get stream context.
    * @return
    */
-  Context& getInputStreamContext() override;
+  share::Context& getInputStreamContext() override;
 
 };
 
@@ -103,7 +103,7 @@ public:
  */
 class FileOutputStream : public OutputStream {
 public:
-  static oatpp::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static oatpp::data::stream::DefaultInitializedStreamContext DEFAULT_CONTEXT;
 private:
   std::FILE* m_file;
   bool m_ownsFile;
@@ -162,7 +162,7 @@ public:
    * Get stream context.
    * @return
    */
-  Context& getOutputStreamContext() override;
+  share::Context& getOutputStreamContext() override;
 
 };
 

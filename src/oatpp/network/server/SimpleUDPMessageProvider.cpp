@@ -23,7 +23,7 @@
  *
  ***************************************************************************/
 
-#include "./SimpleUDPConnectionProvider.hpp"
+#include "SimpleUDPMessageProvider.hpp"
 
 #include "oatpp/core/utils/ConversionUtils.hpp"
 
@@ -48,7 +48,7 @@
 
 namespace oatpp { namespace network { namespace server {
 
-SimpleUDPConnectionProvider::SimpleUDPConnectionProvider(v_uint16 port)
+SimpleUDPMessageProvider::SimpleUDPMessageProvider(v_uint16 port)
     : m_port(port)
     , m_closed(false)
 {
@@ -57,11 +57,11 @@ SimpleUDPConnectionProvider::SimpleUDPConnectionProvider(v_uint16 port)
   setProperty(PROPERTY_PORT, oatpp::utils::conversion::int32ToStr(port));
 }
 
-SimpleUDPConnectionProvider::~SimpleUDPConnectionProvider() {
+SimpleUDPMessageProvider::~SimpleUDPMessageProvider() {
   close();
 }
 
-void SimpleUDPConnectionProvider::close() {
+void SimpleUDPMessageProvider::close() {
   if(!m_closed) {
     m_closed = true;
 #if defined(WIN32) || defined(_WIN32)
@@ -133,7 +133,7 @@ oatpp::v_io_handle SimpleUDPConnectionProvider::instantiateServer(){
 
 #else
 
-oatpp::v_io_handle SimpleUDPConnectionProvider::instantiateServer(){
+oatpp::v_io_handle SimpleUDPMessageProvider::instantiateServer(){
 
   oatpp::v_io_handle serverHandle;
   v_int32 ret;
@@ -183,15 +183,8 @@ oatpp::v_io_handle SimpleUDPConnectionProvider::instantiateServer(){
 
 #endif
 
-std::shared_ptr<oatpp::data::stream::IOStream> SimpleUDPConnectionProvider::getUDPConnection() {
-  auto connection = std::make_shared<BufferedUDPConnection>(m_serverHandle);
-  // The BufferedUDPConnection does not populate or flush on its own to be compatible to client and server connections
-  // So need to call populate it with the actual udp-message before passing it
-  connection->populate();
-  return connection;
-}
 
-std::shared_ptr<oatpp::data::stream::IOStream> SimpleUDPConnectionProvider::getConnection() {
+std::shared_ptr<oatpp::data::message::IOMessage> SimpleUDPMessageProvider::getMessage() {
 
   fd_set set;
   struct timeval timeout;
@@ -215,10 +208,14 @@ std::shared_ptr<oatpp::data::stream::IOStream> SimpleUDPConnectionProvider::getC
 
   }
 
-  return getUDPConnection();
+  auto message = std::make_shared<UDPMessage>(m_serverHandle);
+  // The BufferedUDPConnection does not populate or flush on its own to be compatible to client and server connections
+  // So need to call populate it with the actual udp-message before passing it
+  message->populate();
+  return message;
 }
 
-void SimpleUDPConnectionProvider::invalidateConnection(const std::shared_ptr<IOStream>& connection) {
+void SimpleUDPMessageProvider::invalidateMessage(const std::shared_ptr<IOMessage> &connection){
 
   /**
    * Do nothing. We have no real "connection" just the socket. We don't want to close that here!
@@ -226,7 +223,7 @@ void SimpleUDPConnectionProvider::invalidateConnection(const std::shared_ptr<IOS
 
 }
 
-oatpp::v_io_handle SimpleUDPConnectionProvider::getHandle() {
+oatpp::v_io_handle SimpleUDPMessageProvider::getHandle() {
   return m_serverHandle;
 }
 

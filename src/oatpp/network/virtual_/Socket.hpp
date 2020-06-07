@@ -116,13 +116,13 @@ public:
    * Get output stream context.
    * @return
    */
-  oatpp::data::stream::Context& getOutputStreamContext() override;
+  oatpp::data::share::Context& getOutputStreamContext() override;
 
   /**
    * Get input stream context.
    * @return
    */
-  oatpp::data::stream::Context& getInputStreamContext() override;
+  oatpp::data::share::Context& getInputStreamContext() override;
 
   /**
    * Close socket pipes.

@@ -88,11 +88,11 @@ oatpp::data::stream::IOMode ConnectionPool::ConnectionWrapper::getInputStreamIOM
   return m_connection->getInputStreamIOMode();
 }
 
-oatpp::data::stream::Context& ConnectionPool::ConnectionWrapper::getOutputStreamContext() {
+oatpp::data::share::Context& ConnectionPool::ConnectionWrapper::getOutputStreamContext() {
   return m_connection->getOutputStreamContext();
 }
 
-oatpp::data::stream::Context& ConnectionPool::ConnectionWrapper::getInputStreamContext() {
+oatpp::data::share::Context& ConnectionPool::ConnectionWrapper::getInputStreamContext() {
   return m_connection->getInputStreamContext();
 }
 

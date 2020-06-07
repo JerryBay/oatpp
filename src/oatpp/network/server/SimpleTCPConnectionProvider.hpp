@@ -49,27 +49,27 @@ public:
     static const char* const PROPERTY_PEER_PORT;
 
   protected:
-    data::stream::DefaultInitializedContext m_context;
+    data::stream::DefaultInitializedStreamContext m_context;
   public:
 
     /**
      * Constructor.
      * @param handle - &id:oatpp::v_io_handle;.
-     * @param properties - &id:oatpp::data::stream::Context::Properties;.
+     * @param properties - &id:oatpp::data::share::Context::Properties;.
      */
-    ExtendedConnection(v_io_handle handle, data::stream::Context::Properties&& properties);
+    ExtendedConnection(v_io_handle handle, data::share::Context::Properties&& properties);
 
     /**
      * Get output stream context.
-     * @return - &id:oatpp::data::stream::Context;.
+     * @return - &id:oatpp::data::share::Context;.
      */
-    oatpp::data::stream::Context& getOutputStreamContext() override;
+    oatpp::data::share::Context& getOutputStreamContext() override;
 
     /**
      * Get input stream context. <br>
-     * @return - &id:oatpp::data::stream::Context;.
+     * @return - &id:oatpp::data::share::Context;.
      */
-    oatpp::data::stream::Context& getInputStreamContext() override;
+    oatpp::data::share::Context& getInputStreamContext() override;
 
   };
 

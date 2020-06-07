@@ -52,7 +52,7 @@ public:
     throw std::runtime_error("It's a stub!");
   }
 
-  oatpp::data::stream::Context& getOutputStreamContext() override {
+  oatpp::data::share::Context& getOutputStreamContext() override {
     throw std::runtime_error("It's a stub!");
   }
 
@@ -64,7 +64,7 @@ public:
     throw std::runtime_error("It's a stub!");
   }
 
-  oatpp::data::stream::Context& getInputStreamContext() override {
+  oatpp::data::share::Context& getInputStreamContext() override {
     throw std::runtime_error("It's a stub!");
   }
 

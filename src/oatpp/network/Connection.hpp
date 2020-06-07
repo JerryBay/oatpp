@@ -35,7 +35,7 @@ namespace oatpp { namespace network {
  */
 class Connection : public oatpp::base::Countable, public oatpp::data::stream::IOStream {
 private:
-  static oatpp::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static oatpp::data::stream::DefaultInitializedStreamContext DEFAULT_CONTEXT;
 private:
   v_io_handle m_handle;
   data::stream::IOMode m_mode;
@@ -89,9 +89,9 @@ public:
 
   /**
    * Get output stream context.
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:oatpp::data::share::Context;.
    */
-  oatpp::data::stream::Context& getOutputStreamContext() override;
+  oatpp::data::share::Context& getOutputStreamContext() override;
 
   /**
    * Set InputStream I/O mode.
@@ -107,9 +107,9 @@ public:
 
   /**
    * Get input stream context. <br>
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:oatpp::data::share::Context;.
    */
-  oatpp::data::stream::Context& getInputStreamContext() override;
+  oatpp::data::share::Context& getInputStreamContext() override;
 
   /**
    * Close socket handle.

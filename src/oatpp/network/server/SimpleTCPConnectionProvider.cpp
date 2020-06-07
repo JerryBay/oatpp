@@ -52,16 +52,16 @@ const char* const SimpleTCPConnectionProvider::ExtendedConnection::PROPERTY_PEER
 const char* const SimpleTCPConnectionProvider::ExtendedConnection::PROPERTY_PEER_ADDRESS_FORMAT = "peer_address_format";
 const char* const SimpleTCPConnectionProvider::ExtendedConnection::PROPERTY_PEER_PORT = "peer_port";
 
-SimpleTCPConnectionProvider::ExtendedConnection::ExtendedConnection(v_io_handle handle, data::stream::Context::Properties&& properties)
+SimpleTCPConnectionProvider::ExtendedConnection::ExtendedConnection(v_io_handle handle, data::share::Context::Properties&& properties)
   : Connection(handle)
-  , m_context(data::stream::StreamType::STREAM_INFINITE, std::forward<data::stream::Context::Properties>(properties))
+  , m_context(data::stream::StreamType::STREAM_INFINITE, std::forward<data::share::Context::Properties>(properties))
 {}
 
-oatpp::data::stream::Context& SimpleTCPConnectionProvider::ExtendedConnection::getOutputStreamContext() {
+oatpp::data::share::Context& SimpleTCPConnectionProvider::ExtendedConnection::getOutputStreamContext() {
   return m_context;
 }
 
-oatpp::data::stream::Context& SimpleTCPConnectionProvider::ExtendedConnection::getInputStreamContext() {
+oatpp::data::share::Context& SimpleTCPConnectionProvider::ExtendedConnection::getInputStreamContext() {
   return m_context;
 }
 
@@ -257,7 +257,7 @@ std::shared_ptr<oatpp::data::stream::IOStream> SimpleTCPConnectionProvider::getE
   struct sockaddr_storage clientAddress;
   socklen_t clientAddressSize = sizeof(clientAddress);
 
-  data::stream::Context::Properties properties;
+  data::share::Context::Properties properties;
 
   oatpp::v_io_handle handle = accept(m_serverHandle, (struct sockaddr*) &clientAddress, &clientAddressSize);
 

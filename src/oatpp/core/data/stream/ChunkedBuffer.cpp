@@ -26,7 +26,7 @@
 
 namespace oatpp { namespace data{ namespace stream {
 
-data::stream::DefaultInitializedContext ChunkedBuffer::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
+data::stream::DefaultInitializedStreamContext ChunkedBuffer::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
 
 const char* ChunkedBuffer::ERROR_ASYNC_FAILED_TO_WRITE_ALL_DATA = "ERROR_ASYNC_FAILED_TO_WRITE_ALL_DATA";
 
@@ -160,7 +160,7 @@ IOMode ChunkedBuffer::getOutputStreamIOMode() {
   return m_ioMode;
 }
 
-Context& ChunkedBuffer::getOutputStreamContext() {
+share::Context& ChunkedBuffer::getOutputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 

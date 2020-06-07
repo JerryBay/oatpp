@@ -71,7 +71,7 @@ public:
    * Get context of the underlying stream.
    * @return
    */
-  Context& getOutputStreamContext() override;
+  share::Context& getOutputStreamContext() override;
 
   v_io_size flush();
   oatpp::async::CoroutineStarter flushAsync();
@@ -139,7 +139,7 @@ public:
    * Get context of the underlying stream.
    * @return
    */
-  Context& getInputStreamContext() override;
+  share::Context& getInputStreamContext() override;
 
   void setBufferPosition(v_io_size readPosition, v_io_size writePosition, bool canRead) {
     m_buffer.setBufferPosition(readPosition, writePosition, canRead);

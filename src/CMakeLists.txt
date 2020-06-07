@@ -76,6 +76,8 @@ add_library(oatpp
         oatpp/core/data/buffer/IOBuffer.hpp
         oatpp/core/data/buffer/Processor.cpp
         oatpp/core/data/buffer/Processor.hpp
+        oatpp/core/data/buffer/DynamicBuffer.cpp
+        oatpp/core/data/buffer/DynamicBuffer.hpp
         oatpp/core/data/mapping/ObjectMapper.cpp
         oatpp/core/data/mapping/ObjectMapper.hpp
         oatpp/core/data/mapping/type/Any.cpp
@@ -98,9 +100,13 @@ add_library(oatpp
         oatpp/core/data/mapping/type/UnorderedSet.hpp
         oatpp/core/data/mapping/type/Vector.cpp
         oatpp/core/data/mapping/type/Vector.hpp
+        oatpp/core/data/message/Message.cpp
+        oatpp/core/data/message/Message.hpp
         oatpp/core/data/share/LazyStringMap.hpp
         oatpp/core/data/share/MemoryLabel.cpp
         oatpp/core/data/share/MemoryLabel.hpp
+        oatpp/core/data/share/Context.cpp
+        oatpp/core/data/share/Context.hpp
         oatpp/core/data/stream/BufferStream.cpp
         oatpp/core/data/stream/BufferStream.hpp
         oatpp/core/data/stream/ChunkedBuffer.cpp
@@ -128,16 +134,16 @@ add_library(oatpp
         oatpp/encoding/Hex.hpp
         oatpp/encoding/Unicode.cpp
         oatpp/encoding/Unicode.hpp
-        oatpp/network/BufferedConnection.cpp
-        oatpp/network/BufferedConnection.hpp
-        oatpp/network/BufferedUDPConnection.cpp
-        oatpp/network/BufferedUDPConnection.hpp
         oatpp/network/Connection.cpp
         oatpp/network/Connection.hpp
         oatpp/network/ConnectionPool.cpp
         oatpp/network/ConnectionPool.hpp
         oatpp/network/ConnectionProvider.cpp
         oatpp/network/ConnectionProvider.hpp
+        oatpp/network/MessageProvider.cpp
+        oatpp/network/MessageProvider.hpp
+        oatpp/network/UDPMessage.cpp
+        oatpp/network/UDPMessage.hpp
         oatpp/network/Url.cpp
         oatpp/network/Url.hpp
         oatpp/network/client/SimpleTCPConnectionProvider.cpp
@@ -148,8 +154,8 @@ add_library(oatpp
         oatpp/network/server/Server.hpp
         oatpp/network/server/SimpleTCPConnectionProvider.cpp
         oatpp/network/server/SimpleTCPConnectionProvider.hpp
-        oatpp/network/server/SimpleUDPConnectionProvider.cpp
-        oatpp/network/server/SimpleUDPConnectionProvider.hpp
+        oatpp/network/server/SimpleUDPMessageProvider.cpp
+        oatpp/network/server/SimpleUDPMessageProvider.hpp
         oatpp/network/virtual_/Interface.cpp
         oatpp/network/virtual_/Interface.hpp
         oatpp/network/virtual_/Pipe.cpp
@@ -251,6 +257,10 @@ add_library(oatpp
         oatpp/web/url/mapping/Pattern.cpp
         oatpp/web/url/mapping/Pattern.hpp
         oatpp/web/url/mapping/Router.hpp
+        oatpp/network/MessageProvider.cpp
+        oatpp/network/MessageProvider.hpp
+        oatpp/network/UDPMessage.cpp
+        oatpp/network/UDPMessage.hpp
 )
 
 set_target_properties(oatpp PROPERTIES

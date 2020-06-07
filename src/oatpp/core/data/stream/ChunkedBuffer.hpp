@@ -37,7 +37,7 @@ namespace oatpp { namespace data{ namespace stream {
  */
 class ChunkedBuffer : public oatpp::base::Countable, public ConsistentOutputStream, public std::enable_shared_from_this<ChunkedBuffer> {
 public:
-  static data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static data::stream::DefaultInitializedStreamContext DEFAULT_CONTEXT;
 public:
   static const char* ERROR_ASYNC_FAILED_TO_WRITE_ALL_DATA;
 public:
@@ -183,9 +183,9 @@ public:
 
   /**
    * Get stream context.
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:oatpp::data::share::Context;.
    */
-  Context& getOutputStreamContext() override;
+ share::Context& getOutputStreamContext() override;
 
   /**
    * Read part of ChunkedBuffer to buffer.

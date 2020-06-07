@@ -46,7 +46,7 @@ oatpp::data::stream::IOMode OutputStreamBufferedProxy::getOutputStreamIOMode() {
   return m_outputStream->getOutputStreamIOMode();
 }
 
-Context& OutputStreamBufferedProxy::getOutputStreamContext() {
+share::Context& OutputStreamBufferedProxy::getOutputStreamContext() {
   return m_outputStream->getOutputStreamContext();
 }
 
@@ -98,7 +98,7 @@ oatpp::data::stream::IOMode InputStreamBufferedProxy::getInputStreamIOMode() {
   return m_inputStream->getInputStreamIOMode();
 }
 
-Context& InputStreamBufferedProxy::getInputStreamContext() {
+share::Context& InputStreamBufferedProxy::getInputStreamContext() {
   return m_inputStream->getInputStreamContext();
 }
   

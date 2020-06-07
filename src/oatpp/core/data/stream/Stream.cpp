@@ -242,45 +242,30 @@ v_io_size ReadCallback::readSimple(void *data, v_buff_size count) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Context
+// DefaultInitializedStreamContext
 
-Context::Context(Properties&& properties)
-  : m_properties(std::forward<Properties>(properties))
-{}
-
-const Context::Properties& Context::getProperties() const {
-  return m_properties;
-}
-
-Context::Properties& Context::getMutableProperties() {
-  return m_properties;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// DefaultInitializedContext
-
-DefaultInitializedContext::DefaultInitializedContext(StreamType streamType)
+DefaultInitializedStreamContext::DefaultInitializedStreamContext(StreamType streamType)
   : m_streamType(streamType)
 {}
 
-DefaultInitializedContext::DefaultInitializedContext(StreamType streamType, Properties&& properties)
-  : Context(std::forward<Properties>(properties))
+DefaultInitializedStreamContext::DefaultInitializedStreamContext(StreamType streamType, Properties&& properties)
+  : DefaultInitializedContext(std::forward<Properties>(properties))
   , m_streamType(streamType)
 {}
 
-void DefaultInitializedContext::init() {
+void DefaultInitializedStreamContext::init() {
   // DO NOTHING
 }
 
-async::CoroutineStarter DefaultInitializedContext::initAsync() {
+async::CoroutineStarter DefaultInitializedStreamContext::initAsync() {
   return nullptr;
 }
 
-bool DefaultInitializedContext::isInitialized() const {
+bool DefaultInitializedStreamContext::isInitialized() const {
   return true;
 }
 
-StreamType DefaultInitializedContext::getStreamType() const {
+StreamType DefaultInitializedStreamContext::getStreamType() const {
   return m_streamType;
 }
 

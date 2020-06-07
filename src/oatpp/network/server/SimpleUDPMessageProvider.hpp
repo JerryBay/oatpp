@@ -23,11 +23,11 @@
  *
  ***************************************************************************/
 
-#ifndef oatpp_netword_server_SimpleUDPConnectionProvider_hpp
-#define oatpp_netword_server_SimpleUDPConnectionProvider_hpp
+#ifndef oatpp_netword_server_SimpleUDPMessageProvider_hpp
+#define oatpp_netword_server_SimpleUDPMessageProvider_hpp
 
-#include "oatpp/network/ConnectionProvider.hpp"
-#include "oatpp/network/BufferedUDPConnection.hpp"
+#include "oatpp/network/MessageProvider.hpp"
+#include "oatpp/network/UDPMessage.hpp"
 
 #include "oatpp/core/Types.hpp"
 
@@ -36,7 +36,7 @@ namespace oatpp { namespace network { namespace server {
 /**
  * Simple provider of Buffered UDP connections.
  */
-class SimpleUDPConnectionProvider : public base::Countable, public ServerConnectionProvider {
+class SimpleUDPMessageProvider : public base::Countable, public MessageProvider {
  public:
 
  private:
@@ -49,33 +49,30 @@ class SimpleUDPConnectionProvider : public base::Countable, public ServerConnect
 
  private:
   oatpp::v_io_handle instantiateServer();
-  std::shared_ptr<IOStream> getUDPConnection();
 
  public:
 
   /**
    * Constructor.
-   * @param port - port to listen for incoming connections.
-   * @param useExtendedConnections - set `true` to use &l:SimpleUDPConnectionProvider::ExtendedConnection;.
+   * @param port - port to listen for incoming messages.
    * `false` to use &id:oatpp::network::Connection;.
    */
-  SimpleUDPConnectionProvider(v_uint16 port);
+  SimpleUDPMessageProvider(v_uint16 port);
  public:
 
   /**
-   * Create shared SimpleUDPConnectionProvider.
+   * Create shared SimpleUDPMessageProvider.
    * @param port - port to listen for incoming connections.
-   * @param port
-   * @return - `std::shared_ptr` to SimpleUDPConnectionProvider.
+   * @return - `std::shared_ptr` to SimpleUDPMessageProvider.
    */
-  static std::shared_ptr<SimpleUDPConnectionProvider> createShared(v_uint16 port){
-    return std::make_shared<SimpleUDPConnectionProvider>(port);
+  static std::shared_ptr<SimpleUDPMessageProvider> createShared(v_uint16 port){
+    return std::make_shared<SimpleUDPMessageProvider>(port);
   }
 
   /**
    * Virtual destructor.
    */
-  ~SimpleUDPConnectionProvider();
+  ~SimpleUDPMessageProvider();
 
   /**
    * Close accept-socket.
@@ -84,9 +81,9 @@ class SimpleUDPConnectionProvider : public base::Countable, public ServerConnect
 
   /**
    * Get incoming connection.
-   * @return &id:oatpp::data::stream::IOStream;.
+   * @return &id:oatpp::data::message::IOMessage;.
    */
-  std::shared_ptr<IOStream> getConnection() override;
+  std::shared_ptr<IOMessage> getMessage() override;
 
   /**
    * No need to implement this.<br>
@@ -96,7 +93,7 @@ class SimpleUDPConnectionProvider : public base::Countable, public ServerConnect
    * <br>
    * *It may be implemented later*
    */
-  oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::data::stream::IOStream>&> getConnectionAsync() override {
+  oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::data::message::IOMessage>&> getMessageAsync() override {
     /*
      *  No need to implement this.
      *  For Asynchronous IO in oatpp it is considered to be a good practice
@@ -105,7 +102,7 @@ class SimpleUDPConnectionProvider : public base::Countable, public ServerConnect
      *
      *  It may be implemented later
      */
-    throw std::runtime_error("[oatpp::network::server::SimpleUDPConnectionProvider::getConnectionAsync()]: Error. Not implemented.");
+    throw std::runtime_error("[oatpp::network::server::SimpleUDPMessageProvider::getMessageAsync()]: Error. Not implemented.");
   }
 
   /**
@@ -113,7 +110,7 @@ class SimpleUDPConnectionProvider : public base::Countable, public ServerConnect
    * `connection` **MUST** be an object previously obtained from **THIS** connection provider.
    * @param connection
    */
-  void invalidateConnection(const std::shared_ptr<IOStream>& connection) override;
+  void invalidateMessage(const std::shared_ptr<IOMessage>& connection) override;
 
   /**
    * Get port.
@@ -127,4 +124,4 @@ class SimpleUDPConnectionProvider : public base::Countable, public ServerConnect
 
 }}}
 
-#endif /* oatpp_netword_server_SimpleUDPConnectionProvider_hpp */
+#endif /* oatpp_netword_server_SimpleUDPMessageProvider_hpp */
