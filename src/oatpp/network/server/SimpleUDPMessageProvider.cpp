@@ -208,7 +208,7 @@ std::shared_ptr<oatpp::data::message::IOMessage> SimpleUDPMessageProvider::getMe
 
   }
 
-  auto message = std::make_shared<UDPMessage>(m_serverHandle);
+  auto message = std::make_shared<InputUDPMessage>(m_serverHandle);
   // The BufferedUDPConnection does not populate or flush on its own to be compatible to client and server connections
   // So need to call populate it with the actual udp-message before passing it
   message->populate();

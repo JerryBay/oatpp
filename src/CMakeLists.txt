@@ -261,7 +261,7 @@ add_library(oatpp
         oatpp/network/MessageProvider.hpp
         oatpp/network/UDPMessage.cpp
         oatpp/network/UDPMessage.hpp
-)
+        oatpp/network/server/StreamWrappedUDPMessagesProvider.cpp oatpp/network/server/StreamWrappedUDPMessagesProvider.hpp oatpp/network/StreamWrappedUDPMessage.cpp oatpp/network/StreamWrappedUDPMessage.hpp)
 
 set_target_properties(oatpp PROPERTIES
         CXX_STANDARD 11

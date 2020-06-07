@@ -35,12 +35,20 @@
 namespace oatpp { namespace network {
 
 class UDPMessage : public oatpp::data::message::IOMessage {
- private:
+ protected:
   struct sockaddr_storage m_clientAddress;
   static oatpp::data::share::DefaultInitializedContext DEFAULT_CONTEXT;
   v_io_handle m_handle;
 
+
  public:
+  static const v_io_size MAX_UDP_PAYLOAD = 65507;
+
+  static std::shared_ptr<UDPMessage> createShared(oatpp::v_io_handle handle) {
+    return std::make_shared<UDPMessage>(handle);
+  }
+
+  std::shared_ptr<UDPMessage> copyRecipient();
 
   /**
    * Constructor.
@@ -52,16 +60,27 @@ class UDPMessage : public oatpp::data::message::IOMessage {
    */
   ~UDPMessage();
 
-  /**
-   * Clears the output buffer and writes it to the Network-Stream
-   */
-  void flush();
+};
+
+class InputUDPMessage : public UDPMessage {
+ public:
+  InputUDPMessage(oatpp::v_io_handle handle);
 
   /**
    * Reads all data from the message and puts it into `m_in`.
    * @return read bytes
    */
   v_io_size populate();
+};
+
+class OutputUDPMessage : public UDPMessage {
+ public:
+  OutputUDPMessage(oatpp::v_io_handle handle);
+
+  /**
+   * Clears the output buffer and writes it to the Network-Stream
+   */
+  void flush();
 };
 
 }}

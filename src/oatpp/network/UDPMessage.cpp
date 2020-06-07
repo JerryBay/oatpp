@@ -26,8 +26,6 @@
 #include <netinet/in.h>
 #include "UDPMessage.hpp"
 
-#define MAX_UDP_PAYLOAD_SIZE 65507
-
 namespace oatpp { namespace network {
 
 oatpp::data::share::DefaultInitializedContext UDPMessage::DEFAULT_CONTEXT;
@@ -39,8 +37,18 @@ UDPMessage::UDPMessage(oatpp::v_io_handle handle) : IOMessage() {
 UDPMessage::~UDPMessage() {
 
 }
+std::shared_ptr<UDPMessage> UDPMessage::copyRecipient() {
+  auto msg = UDPMessage::createShared(m_handle);
+  memcpy(&msg.get()->m_clientAddress, &m_clientAddress, sizeof(m_clientAddress));
+  // Context?
+  return msg;
+}
 
-void UDPMessage::flush() {
+OutputUDPMessage::OutputUDPMessage(oatpp::v_io_handle handle) : UDPMessage(handle) {
+
+}
+
+void OutputUDPMessage::flush() {
   ssize_t rc;
 
   // Do we care if the call fails? Probably not, its UDP
@@ -56,13 +64,13 @@ void UDPMessage::flush() {
     rc = sendto(m_handle, (const char *) getData(), getSize(), 0,
                 (struct sockaddr *) &cliaddr, sizeof(cliaddr));
   } else {
-    OATPP_LOGE("[oatpp::network::UDPMessage::flush()]", "Error. Unknown ss_family");
-    throw std::runtime_error("[oatpp::network::UDPMessage::flus()]: Error. Unknown ss_family.");
+    OATPP_LOGE("[oatpp::network::OutputUDPMessage::flush()]", "Error. Unknown ss_family");
+    throw std::runtime_error("[oatpp::network::OutputUDPMessage::flus()]: Error. Unknown ss_family.");
   }
 
   // But at least print this error message...
   if (rc < 0) {
-    OATPP_LOGE("[oatpp::network::UDPMessage::flush()]","Error: %s (%d)",strerror(errno), errno);
+    OATPP_LOGE("[oatpp::network::OutputUDPMessage::flush()]","Error: %s (%d)",strerror(errno), errno);
   }
 
   // Clear up data and set to 0 before to not leave any sensitive things in memory
@@ -70,9 +78,13 @@ void UDPMessage::flush() {
   resize(0);
 }
 
-v_io_size UDPMessage::populate() {
+InputUDPMessage::InputUDPMessage(oatpp::v_io_handle handle) : UDPMessage(handle) {
+
+}
+
+v_io_size InputUDPMessage::populate() {
   // Allocate buffer
-  grow(MAX_UDP_PAYLOAD_SIZE);
+  grow(MAX_UDP_PAYLOAD);
 
   // Prepare the memory to save the senders details
   socklen_t clientAddressSize = sizeof(m_clientAddress);
@@ -81,13 +93,13 @@ v_io_size UDPMessage::populate() {
   // Read the whole message (as long as the buffer is sufficient).
   // In this case we are safe because there is a hard UDP payload limit.
   // Also we are saving the senders details so we can address it for our response
-  ssize_t rc = recvfrom(m_handle, (char *) getData(), MAX_UDP_PAYLOAD_SIZE,
+  ssize_t rc = recvfrom(m_handle, (char *) getData(), MAX_UDP_PAYLOAD,
                         MSG_WAITALL, (struct sockaddr *) &m_clientAddress,
                         &clientAddressSize);
 
   if (rc < 0) {
-    OATPP_LOGE("[oatpp::network::UDPMessage::populate()]", "Error. recv failed: %s (%d)", strerror(errno), errno);
-    throw std::runtime_error("[oatpp::network::UDPMessage::populate()]: Error. recv failed.");
+    OATPP_LOGE("[oatpp::network::InputUDPMessage::populate()]", "Error. recv failed: %s (%d)", strerror(errno), errno);
+    throw std::runtime_error("[oatpp::network::InputUDPMessage::populate()]: Error. recv failed.");
   }
 
   // Resize the buffer to the actual amount of data.

@@ -23,45 +23,24 @@
  *
  ***************************************************************************/
 
-#include "Context.hpp"
+#include "oatpp/network/UDPMessage.hpp"
+#include "oatpp/network/StreamWrappedUDPMessage.hpp"
+#include "StreamWrappedUDPMessagesProvider.hpp"
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Context
+namespace oatpp { namespace network { namespace server {
 
-namespace oatpp { namespace data { namespace share {
+StreamWrappedUDPMessagesProvider::StreamWrappedUDPMessagesProvider(const std::shared_ptr<MessageProvider> &msgProvider)
+  : m_msgprov(msgProvider) {
 
-Context::Context(Properties &&properties)
-    : m_properties(std::forward<Properties>(properties)) {}
-
-const Context::Properties &Context::getProperties() const {
-  return m_properties;
 }
 
-Context::Properties &Context::getMutableProperties() {
-  return m_properties;
+std::shared_ptr<ConnectionProvider::IOStream> StreamWrappedUDPMessagesProvider::getConnection() {
+  auto imsg = std::static_pointer_cast<UDPMessage>(m_msgprov->getMessage());
+  if (imsg == nullptr) {
+    return nullptr;
+  }
+  auto omsg = imsg->copyRecipient();
+  return StreamWrappedUDPMessage::createShared(imsg, omsg);
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// DefaultInitializedContext
-
-DefaultInitializedContext::DefaultInitializedContext()
-{}
-
-DefaultInitializedContext::DefaultInitializedContext(Properties&& properties)
-    : Context(std::forward<Properties>(properties))
-{}
-
-void DefaultInitializedContext::init() {
-  // DO NOTHING
-}
-
-async::CoroutineStarter DefaultInitializedContext::initAsync() {
-  return nullptr;
-}
-
-bool DefaultInitializedContext::isInitialized() const {
-  return true;
-}
-
 
 }}}
